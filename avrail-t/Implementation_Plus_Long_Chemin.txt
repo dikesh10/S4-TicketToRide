@@ -1,0 +1,20 @@
+FONCTIONNEMENT DU CALCUL DU PLUS LONG CHEMIN :
+
+Le calcul du plus long chemin dans un graphe a été effectué par copie.
+On a utilisé, pour cela, de la recurrence.
+
+La méthode principale, longestPathAlgo va parcourir chacune des routes que le joueur courant aura parcouru 
+puis va retirer temporairement celle-ci du graph pour ne pas avoir à la revoir encore. Elle va calculé le plus long 
+chemin en verifiant depuis la source et depuis la destination de la route et va recupérer la valeur maximum entre 
+elles (qui sera stocké dans res). Ce système là, sera aussi verifié dans la fonction recusive.
+
+Ensuite, elle va faire appel à la méthode récursive qui va rechercher le chemin le plus long donnée à partir 
+d'une ville qui aura était passée en argument en supprimant temporairement la route et cela à chaque itération.
+Si la ville de destination de la route est la même que la ville passée en argument, elle fait un appel recursif 
+en continuant son chemin à partir de la ville source de notre route et inversement.
+
+On utilise dans cette algo, un "res" qui nous permettra de continuer a stocker le chemin le plus long à chaque fois.
+Ainsi qu'une variable "visited" de type HashSet<Route> qui nous permettra de stocker les routes déjà visitées 
+pour ne pas avoir à les reparcourir.
+
+Complexité de l'algo: O(2^n)

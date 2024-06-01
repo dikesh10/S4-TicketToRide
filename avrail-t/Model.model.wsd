@@ -1,0 +1,166 @@
+@startuml
+
+package Model.model {
+    class Card {
+        - color: int
+        + Card(color: int)
+        + getColor(): int
+        + setColor(c: int): void
+    }
+    class InfoTime {
+        - gameBoard: GameBoard
+        - observers: ArrayList<Observer>
+        - player: Player
+        - timer: Timer
+        - secondsLeft: int
+        - totalsecond: int
+        - temp: boolean
+        - task: TimerTask
+        - count: static int
+        + InfoTime(gameBoardTimer: GameBoard)
+        + isTemp(): boolean
+        + setupTimerTask()
+        + callTimer()
+        + addObserver(o: Observer)
+        + deleteObserver(o: Observer)
+        + notifyObservers()
+    }
+    class CardPack {
+        - packCards: ArrayList<Card>
+        - cards: Card[]
+        + CardPack()
+        + getPackCards(): ArrayList<Card>
+        + addCardToPack(): void
+        + addCardToPack(c: Card): void
+        + removeCardOfPack(c: Card): void
+        + getCards(): Card[]
+        + setCards(cards: Card[]): void
+        + addCardsToArray(): void
+        + RemoveCard(i: int): void
+        + makeVivid(i: int): void
+        + makeNormalImage(i: int): void
+        + addImagesCard(): void
+    }
+
+    class DestinationCard {
+        - ville1: City
+        - ville2: City
+        - points: int
+        - finish: boolean
+        - id: int
+        + DestinationCard(v1: City, v2: City, point: int, id: int)
+        + DestinationCard()
+        + DestinationCard(id: int)
+        + DestinationCard(v1: City, v2: City)
+    }
+
+    class Graph {
+        - map: ArrayList<Route>
+        + getCopy(): Graph
+        + populateRoutes(cityConnections: HashMap<Integer, ArrayList<Integer>>)
+        + selectRandomColor(): int
+        - generatePlanarConnectedGraph(): HashMap<Integer, ArrayList<Integer>>
+        + getMap(): ArrayList<Route>
+        + Graph()
+        + addRoute(route: Route)
+        + hasPath(source: City, destination: City): boolean
+        - depthFirstSearch(source: City, destination: City, visited: Set<City>): boolean
+    }
+
+    class Route {
+        - source: City
+        - destination: City
+        - length: double
+        - angle: double
+        - color: int
+        - isOccupied: boolean
+        + Route(source: City, destination: City)
+        + calculateDistance(source: City, destination: City): double
+        + calculateAngle(source: City, destination: City): double
+    }
+    class GameBoard {
+        - continent: String
+        - pays: String
+        - graph: Graph
+        - players: ArrayList<Player>
+        - currentPlayer: Player
+        - destinationMaps: DestinationMaps
+        - cardPack: CardPack
+        - observers: ArrayList<Observer>
+        - info: InfoTime
+        - playerActionPoints: int
+        + GameBoard()
+        + getplayerActionPoints(): int
+        + setplayerActionPoints(playerActionPoints: int): void
+        + removeCard(c: Card): void
+        + addCard(c: Card): void
+        + addPlayer(p: Player): void
+        + RemoveCard(i: int): void
+        + makeVivid(i: int): void
+        + makeNormalImage(i: int): void
+        + addImagesCard(): void
+        + removeDestinationLabel(index: int): void
+        + addCardCurrentPlayer(color: int): void
+        + removeDestinationI(index: int): void
+        + chargePanelDestinations(): void
+    }
+    class Player {
+        - score: int
+        - id: int
+        - color: Color
+        - nbWagons: int
+        - name: String
+        - DestinationCards: ArrayList<DestinationCard>
+        - count: static int
+        - chosenCard: int
+        - GameState: int
+        - graph: Graph
+        - destinationMapsGraph: Graph
+        - longestPath: int
+        - packCards: HashMap<Integer, Integer>
+        + Player(name: String, id: int)
+        + Player(n: String)
+        + longestPathAlgo(): int
+        + longestPathAlgoRec(g: Graph, r: Route, c: City): int
+        + addCard(color: int)
+        + removeCard(color: int)
+        + removeCards(color: int, nb: int)
+    }
+
+    class MapsParser {
+        - country: String
+        - continent: String
+        - map: HashMap<Integer, ArrayList<Integer>>
+        - CityNuM: int[][]
+        + MapsParser(continent: String, country: String)
+        + parseMapFile()
+        + extractRoutes(c: String)
+        + printMap()
+        + createDestinations()
+        + distance(p1: Point, p2: Point): double
+        + LongestDistance(points: ArrayList<Point>, ROW: int): int[][]
+        + assignPoints(number: double): int
+    }
+
+    class InfoTime {
+        - gameBoard: GameBoard
+        - observers: ArrayList<Observer>
+        - player: Player
+        - timer: Timer
+        - secondsLeft: int
+        - totalsecond: int
+        - temp: boolean
+        - task: TimerTask
+        - count: static int
+        + InfoTime(gameBoardTimer: GameBoard)
+        + isTemp(): boolean
+        + setupTimerTask()
+        + callTimer()
+        + addObserver(o: Observer)
+        + deleteObserver(o: Observer)
+        + notifyObservers()
+    }
+}
+
+
+@enduml

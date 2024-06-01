@@ -1,0 +1,102 @@
+@startuml
+
+class Card {
+    - color: int
+    --
+    + Card(color: int)
+    + getColor(): int
+    + setColor(c: int): void
+}
+
+class CardPack {
+    - packCards: ArrayList<Card>
+    --
+    + getPackCards(): ArrayList<Card>
+    + addCardToPack(c: Card): void
+    + removeCardOfPack(c: Card): void
+}
+
+class City {
+    - cityType: CityType
+    - coordinates: Point
+    --
+    + City(c: CityType)
+    + getCityNumber(): int
+    + getCoordinates(): Point
+    + setCoordinates(x: int, y: int): void
+}
+
+enum CityType {
+    PARIS
+    LYON
+}
+
+class DestinationMaps {
+    - destinationMaps: ArrayList<Route>
+    --
+    + getDestinationMaps(): ArrayList<Route>
+    + removeMap(r: Route): void
+    + addRoute(r: Route): void
+}
+
+class GameBoard {
+    - graph: Graph
+    - players: ArrayList<Player>
+    - currentPlayer: Player
+    - destinationMaps: DestinationMaps
+    - cardPack: CardPack
+    --
+    + getDestinationMaps(): ArrayList<Route>
+    + removeCard(c: Card): void
+    + addCard(c: Card): void
+    + addDestinationMap(r: Route): void
+    + addPlayer(p: Player): void
+    + getGraph(): Graph
+    + getPlayers(): ArrayList<Player>
+    + getCurrentPlayer(): Player
+    + setCurrentPlayer(p: Player): void
+}
+
+class Graph {
+    - map: HashMap<Integer, ArrayList<Route>>
+    --
+    + getMap(): HashMap<Integer, ArrayList<Route>>
+}
+
+class Player {
+    - score: int
+    - id: int
+    - nbWagons: int
+    - name: String
+    - packCards: HashMap<Integer, Integer>
+    --
+    + getScore(): int
+    + getId(): int
+    + getNbWagons(): int
+    + getName(): String
+    + getPackCard(): HashMap<Integer, Integer>
+    + getNbCards(color: Integer): int
+    + addCard(color: int): void
+    + removeCard(color: int): void
+}
+
+class Route {
+    - source: City
+    - destination: City
+    - length: int
+    --
+    + getSourceCity(): City
+    + getDestinationCity(): City
+    + getLength(): int
+}
+
+Card "1" -- "n" Player : has
+City "1" -- "1" CityType : has
+DestinationMaps "1" -- "n" Route : contains
+GameBoard "1" -- "1" Graph : contains
+GameBoard "1" -- "1" DestinationMaps : contains
+GameBoard "1" -- "1" CardPack : contains
+Graph "1" -- "n" Route : contains
+Player "1" -- "n" Route : controls
+
+@enduml

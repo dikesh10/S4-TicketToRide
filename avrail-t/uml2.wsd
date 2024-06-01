@@ -1,0 +1,190 @@
+@startuml
+
+' Model package
+package "Model" {
+    class "Card" {
+        - color: int
+        + getColor(): int
+        + setColor(int c): void
+    }
+    class "CardPack" {
+        - packCards: ArrayList<Card>
+        + getPackCards(): ArrayList<Card>
+        + addCardToPack(Card c): void
+        + removeCardOfPack(Card c): void
+    }
+    class City {
+        - cityType: CityType
+        - coordinates: Point
+        --
+        + City(c: CityType)
+        + getCityNumber(): int
+        + getCoordinates(): Point
+        + setCoordinates(x: int, y: int): void
+    }
+    enum "CityType" {
+        - coordinates: Point[]
+        + getCoordinates(): Point
+        + setCoordinates(int x, int y): void
+    }
+    class "DestinationMaps" {
+        - destinationMaps: ArrayList<Route>
+        + getDestinationMaps(): ArrayList<Route>
+        + removeMap(Route r): void
+        + addRoute(Route r): void
+    }
+    class "GameBoard" {
+        - graph: Graph
+        - players: ArrayList<Player>
+        - currentPlayer: Player
+        - destinationMaps: DestinationMaps
+        - cardPack: CardPack
+        - observers: ArrayList<Observer>
+        + addObserver(Observer obj): void
+        + deleteObserver(Observer obj): void
+        + notifyObservers(): void
+        + getUpdate(): Object
+        + getDestinationMaps(): ArrayList<Route>
+        + removeCard(Card c): void
+        + addCard(Card c): void
+        + addDestinationMap(Route r): void
+        + addPlayer(Player p): void
+        + getGraph(): Graph
+        + getPlayers(): ArrayList<Player>
+        + getCurrentPlayer(): Player
+        + setCurrentPlayer(Player p): void
+    }
+    class "Graph" {
+        - map: HashMap<Integer, ArrayList<Route>>
+        + getMap(): HashMap<Integer, ArrayList<Route>>
+    }
+    class "MapsParser" {
+        - country: String
+        - continent: String
+        - map: HashMap<Integer, ArrayList<Integer>>
+        + parseMapFile(): void
+        + parse(BufferedReader br): void
+        + extractRoutes(String c): void
+        + printMap(): void
+        + main(String[] args): void
+    }
+    class "Player" {
+        - score: int
+        - id: int
+        - nbWagons: int
+        - name: String
+        - destinationMaps: ArrayList<DestinationMaps>
+        - packCards: HashMap<Integer, Integer>
+        + getDestinationMaps(): ArrayList<DestinationMaps>
+        + getScore(): int
+        + setScore(int newScore): void
+        + getId(): int
+        + getNbWagons(): int
+        + getName(): String
+        + getPackCard(): HashMap<Integer, Integer>
+        + getNbCards(Integer color): int
+        + addCard(int color): void
+        + removeCard(int color): void
+        + addDestinationMap(DestinationMaps destinationMap): void
+        + removeDestinationMap(DestinationMaps destinationMap): void
+    }
+    class "Route" {
+        - source: City
+        - destination: City
+        - length: int
+        + getSourceCity(): City
+        + getDestinationCity(): City
+        + getLength(): int
+    }
+}
+
+' View package
+package "View" {
+    class "View" {
+    }
+
+    package "LeftPanels" {
+        class "LeftPanel" {
+        }
+        class "ChoicePanel" {
+        }
+        class "PlayerCardsPanel" {
+            - observable :Observable
+        }
+        class "MapPanel" {
+            - observable :Observable
+        }
+    }
+    package "RightPanels" {
+        class "RightPanel" {
+        }
+        class "PackCardsPanel" {
+            - observable :Observable
+        }
+        class "PlayersPanel" {
+            - observable :Observable
+        }
+    }
+
+
+
+}
+
+' Controller package
+package "Controller" {
+    class "Controller" {
+        - gameBoard: GameBoard
+        + setScore(Player player, int c): void
+        + addCard(Player player, int c): void
+        + removeCard(Player player, int c): void
+        + addDestinationMap(Player player, DestinationMaps destinationMap): void
+        + removeDestinationMap(Player player, DestinationMaps destinationMap): void
+    }
+}
+
+' Interfaces package
+package "Interfaces" {
+    interface "Observable" {
+        + addObserver(Observer obj): void
+        + deleteObserver(Observer obj): void
+        + notifyObservers(): void
+        + getUpdate(): Object
+    }
+    interface "Observer" {
+        + update(): void
+        + setObservable(Observable observable): void
+    }
+}
+
+' Listeners package
+package "View.Listeners" {
+    class "MapPanelListener" {
+        - controller: Controller
+    }
+    class "PackCardsPanelListener" {
+        - controller: Controller
+    }
+    class "PlayerCardsPanelListener" {
+        - controller: Controller
+    }
+}
+
+' Relationships
+GameBoard --|> Observable
+ChoicePanel --|> Observer
+MapPanel --|> Observer
+PlayerCardsPanel --|> Observer
+PackCardsPanel --|> Observer
+PlayersPanel --|> Observer
+View *-- RightPanel
+View *-- LeftPanel
+LeftPanel o-- ChoicePanel
+LeftPanel o-- PlayerCardsPanel
+LeftPanel o-- MapPanel
+RightPanel o-- PlayersPanel
+RightPanel o-- PackCardsPanel
+MapPanelListener --> Controller
+PackCardsPanelListener --> Controller
+PlayerCardsPanelListener --> Controller
+
+@enduml
